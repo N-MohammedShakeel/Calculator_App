@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickCancel(view: View){
-        binding.resulttv.text = binding.resulttv.text.toString().substring(0,binding.tvAnswer.text.length-1)
+        binding.resulttv.text = binding.resulttv.text.toString().substring(0,binding.resulttv.text.length-1)
         if (binding.resulttv.text.toString() == ""){
             binding.resulttv.text = "0"
         }

@@ -8,20 +8,31 @@
     android:background="@color/black">
 
     <TextView
+        android:id="@+id/count"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <TextView
         android:id="@+id/resulttv"
-        android:text="O"
-        android:gravity="end|bottom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
+        android:gravity="end|bottom"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/guideline"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -38,7 +49,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/btac"
-        android:text="AC"
         android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -59,7 +69,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/btleft"
-        android:text="("
         android:textSize="25sp"
         android:background="@drawable/style"
         android:textStyle="bold"
@@ -81,7 +90,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/btright"
-        android:text=")"
         android:textStyle="bold"
         android:background="@drawable/style"
         android:textColor="@color/black"
@@ -103,7 +111,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/btdivide"
-        android:text="/"
         android:textSize="25sp"
         android:background="@drawable/style"
         android:textStyle="bold"

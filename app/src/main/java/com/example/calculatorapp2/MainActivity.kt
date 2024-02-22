@@ -2,146 +2,166 @@ package com.example.calculatorapp2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.example.calculatorapp2.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    private var resulttv: TextView? = null
+class MainActivity : AppCompatActivity(), View.OnClickListener {
+    private var tvResult: TextView? = null
     private lateinit var binding: ActivityMainBinding
+    lateinit var CalculatorOperations: CalculatorOperations
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val one = findViewById<Button>(R.id.btone)
-        val two = findViewById<Button>(R.id.bttwo)
-        val three = findViewById<Button>(R.id.btthree)
-        val four = findViewById<Button>(R.id.btfour)
-        val five = findViewById<Button>(R.id.btfive)
-        val six = findViewById<Button>(R.id.btsix)
-        val seven = findViewById<Button>(R.id.seven)
-        val eight = findViewById<Button>(R.id.eight)
-        val nine = findViewById<Button>(R.id.nine)
-        val zero = findViewById<Button>(R.id.zero)
-        val dot = findViewById<Button>(R.id.dot)
-        val space = findViewById<Button>(R.id.btspace)
-        var result = findViewById<TextView>(R.id.resulttv)
-        val count = findViewById<TextView>(R.id.count)
-        val add = findViewById<Button>(R.id.add)
-        val sub = findViewById<Button>(R.id.sub)
-        val multi = findViewById<Button>(R.id.btmulti)
-        val divide = findViewById<Button>(R.id.btdivide)
+        tvResult = findViewById(R.id.resulttv)
+        CalculatorOperations = CalculatorOperations(tvResult!!)
 
-
-        var timesclicked = 0
-
-        count.setOnClickListener {
-            timesclicked += 1
-            count.text = timesclicked.toString()
+        val buttons = arrayOf<Button>(
+            findViewById(R.id.btac),
+            findViewById(R.id.btleft),
+            findViewById(R.id.btright),
+            findViewById(R.id.btdivide),
+            findViewById(R.id.seven),
+            findViewById(R.id.eight),
+            findViewById(R.id.nine),
+            findViewById(R.id.btmulti),
+            findViewById(R.id.btfour),
+            findViewById(R.id.btfive),
+            findViewById(R.id.btsix),
+            findViewById(R.id.sub),
+            findViewById(R.id.btone),
+            findViewById(R.id.bttwo),
+            findViewById(R.id.btthree),
+            findViewById(R.id.add),
+            findViewById(R.id.zero),
+            findViewById(R.id.dot),
+            findViewById(R.id.btspace),
+            findViewById(R.id.btequal)
+        )
+        for (button in buttons) {
+            button.setOnClickListener(this)
         }
-        one.setOnClickListener {
-            result.append("1").toString()
-
-        }
-        two.setOnClickListener {
-            result.append("2").toString()
-
-        }
-        three.setOnClickListener {
-            result.append("3").toString()
-
-        }
-        four.setOnClickListener {
-            result.append("4").toString()
-
-        }
-        five.setOnClickListener {
-            result.append("5").toString()
-
-        }
-        six.setOnClickListener {
-            result.append("6").toString()
-
-        }
-        seven.setOnClickListener {
-            result.append("7").toString()
-
-        }
-        eight.setOnClickListener {
-            result.append("8").toString()
-
-        }
-        nine.setOnClickListener {
-            result.append("9").toString()
-
-        }
-        zero.setOnClickListener {
-            result.append("0").toString()
-
-        }
-        dot.setOnClickListener {
-            result.append(".").toString()
-
-        }
-        add.setOnClickListener {
-            result.append("+").toString()
-
-        }
-        sub.setOnClickListener {
-            result.append("-").toString()
-
-        }
-        multi.setOnClickListener {
-            result.append("*").toString()
-
-        }
-        divide.setOnClickListener {
-            result.append("/").toString()
-
-        }
-        space.setOnClickListener {
-            val rip: Any = result?.text!!.removeSuffix((-1).toString())
-            result = rip as TextView?
-
-        }
-
-        stringdataIntoCalc()
-
     }
 
-    private fun stringdataIntoCalc() {
-        val equal = findViewById<Button>(R.id.btequal)
+    override fun onClick(v: View?) {
 
-        equal.setOnClickListener {
-            val stringList: String = resulttv.toString()
-            val ans: MutableList<String> = stringList.split(" ").toMutableList()
-
-            if (ans.size != 4) {
-                println("enter num_op-num")
+        when (v?.id) {
+            R.id.btac -> {
+                CalculatorOperations.onClear()
             }
-            val first: String = ans[0]
-            val second: String = ans[2]
-            val sign: String = ans[1]
-            var result: Int? = null
 
-
-            when (sign) {
-                "+" -> result = first.toInt() + second.toInt()
-                "-" -> result = first.toInt() - second.toInt()
-                "*" -> result = first.toInt() * second.toInt()
-                "/" -> result = first.toInt() / second.toInt()
+            R.id.btleft -> {
+                CalculatorOperations.onClickDigit("(")
             }
-            if (result != null) {
-                return@setOnClickListener
+
+            R.id.btright -> {
+                CalculatorOperations.onClickDigit(")")
+            }
+
+            R.id.add -> {
+                CalculatorOperations.onEqual()
+                CalculatorOperations.onClickDigit("+")
 
             }
 
+            R.id.sub -> {
+                CalculatorOperations.onEqual()
+                CalculatorOperations.onClickDigit("-")
+
+            }
+
+            R.id.btmulti -> {
+                CalculatorOperations.onEqual()
+                CalculatorOperations.onClickDigit("*")
+
+            }
+
+            R.id.btdivide -> {
+                CalculatorOperations.onEqual()
+                CalculatorOperations.onClickDigit("/")
+
+            }
+
+            R.id.btone -> {
+
+                CalculatorOperations.onClickDigit("1")
+            }
+
+            R.id.bttwo -> {
+
+                CalculatorOperations.onClickDigit("2")
+            }
+
+            R.id.btthree -> {
+
+                CalculatorOperations.onClickDigit("3")
+            }
+
+            R.id.btfour -> {
+
+                CalculatorOperations.onClickDigit("4")
+            }
+
+            R.id.btfive -> {
+
+                CalculatorOperations.onClickDigit("5")
+            }
+
+            R.id.btsix -> {
+
+                CalculatorOperations.onClickDigit("6")
+            }
+
+            R.id.seven -> {
+
+                CalculatorOperations.onClickDigit("7")
+            }
+
+            R.id.eight -> {
+
+                CalculatorOperations.onClickDigit("8")
+            }
+
+            R.id.nine -> {
+
+                CalculatorOperations.onClickDigit("9")
+            }
+
+            R.id.zero -> {
+
+                CalculatorOperations.onClickDigit("0")
+            }
+
+            R.id.dot -> {
+
+                CalculatorOperations.onClickDigit(".")
+            }
+
+            R.id.btspace -> {
+
+                if (tvResult?.text.toString() != "")
+                    tvResult?.text = tvResult?.text.toString().substring(0,tvResult?.text.toString().length - 1)
+            }
+
+            R.id.btequal -> {
+                CalculatorOperations.onEqual()
+            }
+
+            else -> {
+
+                Log.d("Error", "Invalid Operation")
+
+            }
 
         }
-
     }
 }
+
+
 
 //constraint layout is used for XML
 

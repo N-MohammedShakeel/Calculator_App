@@ -1,60 +1,63 @@
 package com.example.calculatorapp2
 
 import android.widget.TextView
-import com.example.calculatorapp2.databinding.ActivityMainBinding
+import net.objecthunter.exp4j.ExpressionBuilder
 
 interface CalcOp {
     fun onEqual()
     fun onClear()
-fun onClickDigit(text: String)
+    fun onClickDigit(text: String)
 }
 
 class CalculatorOperations(
     private var tvResult: TextView
 ) : CalcOp {
 
+    private var lastInputWasOperator = false
+
     override fun onEqual() {
         val text = tvResult.text.toString()
-        val numbers = text.split("+", "-", "/", "*")
 
-        if (numbers.size >= 2) {
-            var sum = 0.0
+        try {
+            // Build the expression using exp4j
+            val expression = ExpressionBuilder(text).build()
+            val result = expression.evaluate()
 
-            when {
-                text.contains("+") -> {
-                    for (num in numbers) {
-                        sum += num.toDouble()
-                    }
-                }
-                text.contains("-") -> {
-                    sum = numbers[0].toDouble()
-                    for (i in 1 until numbers.size) {
-                        sum -= numbers[i].toDouble()
-                    }
-                }
-                text.contains("/") -> {
-                    sum = numbers[0].toDouble()
-                    for (i in 1 until numbers.size) {
-                        sum /= numbers[i].toDouble()
-                    }
-                }
-                text.contains("*") -> {
-                    sum = 1.0
-                    for (num in numbers) {
-                        sum *= num.toDouble()
-                    }
-                }
+            // Check for infinity or NaN
+            if (result.isInfinite() || result.isNaN()) {
+                tvResult.text = "Error"
+            } else {
+                tvResult.text = result.toString()
             }
 
-            tvResult.text = sum.toString()
+        } catch (e: ArithmeticException) {
+            tvResult.text = "Error"
+        } catch (e: Exception) {
+            tvResult.text = "Error"
         }
     }
 
     override fun onClear() {
-        tvResult.text = "0"
+        tvResult.text = ""
+        lastInputWasOperator = false
     }
 
     override fun onClickDigit(text: String) {
+        // Remove "Error" message if a number is typed
+        if (tvResult.text.toString() == "Error" && text in "0123456789") {
+            tvResult.text = ""
+        }
+
+        if (text in arrayOf("+", "-", "*", "/")) {
+            if (tvResult.text.isEmpty() || lastInputWasOperator) {
+                // Prevent consecutive operators or starting with an operator
+                return
+            }
+            lastInputWasOperator = true
+        } else {
+            lastInputWasOperator = false
+        }
+
         tvResult.append(text)
     }
 }
